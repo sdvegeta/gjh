@@ -115,7 +115,7 @@ const strictInvoiceValidator = (rule, value, callback) => {
   const hasEmpty = !t || !tax || !mail
   
   if (hasAny && hasEmpty) {
-    callback(new Error('提示：如需电子发票，请填写抬头、税号、邮箱；无需开票则全部留空'))
+    callback(new Error('INVALID_INVOICE'))
   } else {
     callback()
   }
@@ -146,7 +146,15 @@ const handleSave = async () => {
         submitLoading.value = false
       }, 500)
     } else {
-      ElMessage.error('表单未填写完整，请核对下方提示')
+      // Logic: 针对性提示
+      const t = form.invoiceTitle?.trim()
+      const tax = form.taxNo?.trim()
+      const mail = form.invoiceEmail?.trim()
+      if ((t || tax || mail) && (!t || !tax || !mail)) {
+        ElMessage.error('如需开票，请完整填写抬头、税号及邮箱')
+      } else {
+        ElMessage.error('表单未填写完整，请检查红框项')
+      }
     }
   })
 }
@@ -351,5 +359,8 @@ const handleCancel = () => {
   color: #6B7280;
   font-weight: 600;
   letter-spacing: 1px;
+}
+:deep(.compact-form .el-form-item.is-error .el-form-item__error) {
+  display: none !important;
 }
 </style>
