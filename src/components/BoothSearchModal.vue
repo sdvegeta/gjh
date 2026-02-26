@@ -1,11 +1,11 @@
 <script setup>
 import { ref, computed, nextTick } from 'vue'
-import { Search, Warning } from '@element-plus/icons-vue'
+import { Search, Warning, ArrowRight } from '@element-plus/icons-vue'
 
 const props = defineProps({
   visible: Boolean,
   hallName: String,     // 用于 Input 显示如：8.0展厅
-  boothDict: Array      // 父级传入的字典： [{ booth: 'D24', deliver_point_id: '...'} ]
+  boothDict: Array      // 父级传入的字典： [{ boothCode: 'D24', deliverPointId: '...'} ]
 })
 
 const emit = defineEmits(['update:visible', 'select-booth'])
@@ -17,8 +17,8 @@ const searchInputRef = ref(null)
 const filteredBooths = computed(() => {
   if (!searchQuery.value) return props.boothDict
   const upperQuery = searchQuery.value.toUpperCase()
-  return props.boothDict.filter(item => 
-    item.booth.toUpperCase().includes(upperQuery)
+  return (props.boothDict || []).filter(item => 
+    (item.boothCode || '').toUpperCase().includes(upperQuery)
   )
 })
 
@@ -36,11 +36,11 @@ const handleClose = () => {
   emit('update:visible', false)
 }
 
-// 选中某个展位，同时回传展示用的 booth 和后台强绑定的 deliver_point_id
+// 选中某个展位，同时回传展示用的 boothCode 和后台强绑定的 deliverPointId
 const onSelectBooth = (item) => {
   emit('select-booth', {
-    booth: item.booth,
-    deliver_point_id: item.deliver_point_id
+    boothCode: item.boothCode,
+    deliverPointId: item.deliverPointId
   })
   handleClose()
 }
@@ -85,7 +85,7 @@ const onSelectBooth = (item) => {
         </button>
       </div>
 
-      <!-- 搜索结果长列表视图 (需适应千级数据滚动) -->
+      <!-- 搜索结果长列表视图 -->
       <div class="flex-1 overflow-y-auto px-4 py-2">
         
         <!-- 有结果集 -->
@@ -100,7 +100,7 @@ const onSelectBooth = (item) => {
             >
               <div class="flex items-center">
                 <span class="text-gray-400 mr-2 text-sm">{{ hallName }}</span>
-                <span class="text-gray-800 font-bold text-base">{{ item.booth }}</span>
+                <span class="text-gray-800 font-bold text-base">{{ item.boothCode }}</span>
               </div>
               <el-icon class="text-gray-300"><ArrowRight /></el-icon>
             </li>
@@ -126,7 +126,6 @@ const onSelectBooth = (item) => {
 </template>
 
 <style scoped>
-/* 覆盖 ElDrawer 的默认外壳样式 */
 :deep(.el-drawer) {
   border-radius: 16px 16px 0 0;
   outline: none;

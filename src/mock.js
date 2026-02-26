@@ -181,19 +181,18 @@ export const mockZoneDict = [
 const generateMockBooths = (hallValue) => {
     const booths = [];
     const prefixes = ['A', 'B', 'C', 'D', 'E'];
-    let count = 1;
     for (let i = 0; i < 50; i++) {
         const prefix = prefixes[i % prefixes.length];
         const number = String(Math.floor(i / prefixes.length) + 1).padStart(2, '0');
         booths.push({
-            booth: `${prefix}${number}`,
-            deliver_point_id: `point_${hallValue}_${(i % 5) + 1}`
+            boothCode: `${prefix}${number}`,
+            deliverPointId: `point_${hallValue}_${(i % 5) + 1}`
         });
     }
     // 添加一些特殊的展位用于搜索模拟
-    booths.push({ booth: 'X100', deliver_point_id: `point_${hallValue}_1` });
-    booths.push({ booth: 'Y200', deliver_point_id: `point_${hallValue}_2` });
-    booths.push({ booth: 'A01-1', deliver_point_id: `point_${hallValue}_3` });
+    booths.push({ boothCode: 'X100', deliverPointId: `point_${hallValue}_1` });
+    booths.push({ boothCode: 'Y200', deliverPointId: `point_${hallValue}_2` });
+    booths.push({ boothCode: 'A01-1', deliverPointId: `point_${hallValue}_3` });
     return booths;
 };
 
