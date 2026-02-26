@@ -10,6 +10,7 @@ import { useAddressStore } from './composables/useAddress.js'
 // 引入解耦后的子组件
 import AddressList from './components/AddressList.vue'
 import AddressForm from './components/AddressForm.vue'
+import SpecViewer from './components/SpecViewer.vue'
 
 // --- 全局状态管理 ---
 const { addresses, addAddress, updateAddress, removeAddress, setDefault } = useAddressStore()
@@ -140,7 +141,6 @@ const onFormDelete = () => {
         @add-new="handleAddNew"
       />
 
-      <!-- 表单视图 (新增/编辑) -->
       <AddressForm 
         v-else
         :view="currentView"
@@ -151,6 +151,9 @@ const onFormDelete = () => {
         @delete="onFormDelete"
       />
     </main>
+    
+    <!-- 技术规格文档悬浮查阅器 -->
+    <SpecViewer />
 
   </div>
 </template>
